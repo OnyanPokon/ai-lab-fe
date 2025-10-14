@@ -18,7 +18,7 @@ export default class AuthService {
     if (!response.data) return response;
     return {
       ...response,
-      data: response.data.token
+      data: response.data.accessToken
     };
   }
 
@@ -32,13 +32,9 @@ export default class AuthService {
    * }>}
    */
   static async me(token) {
-    const response = await api.get('/auth/me', { token });
+    const response = await api.get('/auth/profile', { token });
     if (!response.data) return response;
     return { ...response, data: User.fromApiData(response.data, token) };
-  }
-
-  static async logout() {
-    return await api.post('/auth/logout');
   }
 
   static async forgot(email) {

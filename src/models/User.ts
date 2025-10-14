@@ -3,15 +3,24 @@ import Model, { ModelChildren } from './Model';
 import Permission from './Permission';
 
 export interface IncomingApiData {
-  id: number;
+  id: string;
   email: string;
   name: string;
   role: {
-    id: number;
+    id: string;
     name: string;
-    permissions: string[];
+    slug: string;
+    permissions: {
+      id: string;
+      name: string;
+      slug: string;
+    }[];
   };
-  permissions: string[];
+  permissions: {
+    id: string;
+    name: string;
+    slug: string;
+  }[];
 }
 
 export interface untranslatedIncoming {}
@@ -22,12 +31,12 @@ interface OutgoingApiData {
 
 export default class User extends Model {
   constructor(
-    public id: number,
+    public id: string,
     public email: string,
     public name: string,
     public token: string,
     public role: Role,
-    public roleId: number,
+    public roleId: string,
     public permissions: Permission[] = []
   ) {
     super();
@@ -55,11 +64,14 @@ export default class User extends Model {
 
   static fromApiData(apiData: IncomingApiData, token: string): User {
     const roles = {
-      admin: Role.ADMIN,
-      opd_provinsi: Role.PEGAWAI
+      Administrator: Role.ADMIN
     };
     const role = roles[apiData.role.name as keyof typeof roles] || null;
-    const permissions = Permission.fromApiData([...apiData.role.permissions, ...apiData.permissions]);
+    const uniquePermissions = Permission.mergeUnique(apiData.role?.permissions, apiData.permissions);
+
+    const rawPermissions = Permission.fromApiData(uniquePermissions);
+    const permissions = Array.isArray(rawPermissions) ? rawPermissions : [rawPermissions];
+
     return new User(apiData.id, apiData.email, apiData.name, token, role, apiData.role.id, permissions);
   }
 
@@ -70,4 +82,4 @@ export default class User extends Model {
   }
 }
 
-Model.children.pengguna = User;
+Model.children.user = User;

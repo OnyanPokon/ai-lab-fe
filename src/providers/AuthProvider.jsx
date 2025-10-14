@@ -28,7 +28,6 @@ import { useCallback, useEffect, useState } from 'react';
 
 export default function AuthProvider({ children }) {
   const { execute: loginService, isLoading: loginIsLoading } = useService(AuthService.login);
-  const { execute: logoutService, isLoading: logoutIsLoading } = useService(AuthService.logout);
   const { execute: forgotService, isLoading: forgotIsLoading } = useService(AuthService.forgot);
   const { execute: resetService, isLoading: resetIsLoading } = useService(AuthService.reset);
   const { execute: getUser, isLoading: getUserIsLoading } = useService(AuthService.me);
@@ -120,8 +119,7 @@ export default function AuthProvider({ children }) {
 
   const logout = useCallback(() => {
     setToken('');
-    logoutService(token);
-  }, [logoutService, setToken, token]);
+  }, [setToken]);
 
   const onUnauthorized = useCallback(() => logout(), [logout]);
 
@@ -134,7 +132,7 @@ export default function AuthProvider({ children }) {
         reset,
         token,
         user,
-        isLoading: loginIsLoading || logoutIsLoading || getUserIsLoading || forgotIsLoading || resetIsLoading,
+        isLoading: loginIsLoading || getUserIsLoading || forgotIsLoading || resetIsLoading,
         onUnauthorized
       }}
     >

@@ -19,7 +19,15 @@ const Auth = () => {
   }, [navigate, redirect, token]);
 
   return (
-    <div className="w-full bg-slate-50 font-sans">
+    <div
+      style={{
+        backgroundImage: `url('/image_asset/background/hero_bg.png')`,
+        backgroundPosition: 'center',
+        backgroundSize: '90%',
+        backgroundRepeat: 'no-repeat'
+      }}
+      className="w-full bg-slate-50 font-sans dark:bg-dark-600"
+    >
       <div className="mx-auto flex min-h-screen w-full max-w-screen-xl flex-col items-center justify-center px-4 py-12">
         <Outlet />
       </div>

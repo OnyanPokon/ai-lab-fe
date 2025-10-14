@@ -1,7 +1,7 @@
 import { PAGINATION_ALL } from '@/constants';
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
-export const BASE_URL = `${baseUrl}/api`;
+export const BASE_URL = `${baseUrl}`;
 
 const controllers = {};
 
