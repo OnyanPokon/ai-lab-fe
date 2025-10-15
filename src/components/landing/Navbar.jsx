@@ -58,8 +58,8 @@ const Navbar = () => {
           </>
         )}
       </div>
-      <div className="flex items-center justify-end gap-x-4">
-        <Button shape="round" icon={themeMode === 'dark' ? <SunOutlined /> : <MoonOutlined />} onClick={toggleTheme} />
+      <div className="flex items-center justify-end gap-x-2">
+        <Button shape="circle" icon={themeMode === 'dark' ? <SunOutlined /> : <MoonOutlined />} onClick={toggleTheme} />
         <Button shape="round" variant="solid" color="primary" icon={<UserOutlined />} onClick={() => navigate('/auth/login')}>
           Masuk
         </Button>

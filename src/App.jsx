@@ -7,6 +7,7 @@ import { RouterProvider } from 'react-router';
 import './index.css';
 import { flattenLandingLinks } from './utils/landingLink';
 import { Notfound } from './pages/result';
+import { Register } from './pages/landing';
 
 function App() {
   const { user } = useAuth();
@@ -22,7 +23,7 @@ function App() {
               path,
               element: <Element />
             })),
-
+            { path: '/register', element: <Register /> },
             { path: '*', element: <Notfound /> }
           ]
         },

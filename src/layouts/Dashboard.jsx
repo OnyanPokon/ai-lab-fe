@@ -1,6 +1,7 @@
 import { DashboardFooter, DashboardSider } from '@/components';
 import { useAuth } from '@/hooks';
-import { LogoutOutlined, MenuOutlined, UserOutlined } from '@ant-design/icons';
+import { useTheme } from '@/hooks/useTheme';
+import { LogoutOutlined, MenuOutlined, MoonOutlined, SunOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Button, Dropdown, Layout, Skeleton, Space, theme } from 'antd';
 import { Content, Header } from 'antd/es/layout/layout';
 import { useEffect, useMemo, useState } from 'react';
@@ -11,6 +12,7 @@ const Dashboard = () => {
   const { logout, token, user } = useAuth();
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { toggleTheme, themeMode } = useTheme();
 
   useEffect(() => {
     if (token) return;
@@ -67,8 +69,7 @@ const Dashboard = () => {
                 </>
               ) : (
                 <>
-                  <span>Hai, {user.name}</span>
-
+                  <Button shape="circle" icon={themeMode === 'dark' ? <SunOutlined /> : <MoonOutlined />} onClick={toggleTheme} />
                   <Dropdown menu={{ items }}>
                     <a onClick={(e) => e.preventDefault()}>
                       <Space>

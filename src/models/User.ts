@@ -81,5 +81,3 @@ export default class User extends Model {
     };
   }
 }
-
-Model.children.user = User;

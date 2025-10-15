@@ -1,26 +1,27 @@
-import { {{model}} } from '@/models';
+/* eslint-disable no-unused-vars */
+import { Roles } from '@/models';
 import api from '@/utils/api';
 
-export default class {{name}} {
+export default class RolesService {
   /**
    * @param {string} token
    * @returns {Promise<{
    *  code: HTTPStatusCode;
    *  status: boolean;
    *  message: string;
-   *  data?: {{model}}[];
+   *  data?: Roles[];
    * }>}
    * */
-    static async getAll({token, ...filters}) {
+  static async getAll({ token, ...filters }) {
     const params = Object.fromEntries(Object.entries(filters).filter(([_, value]) => value !== null && value !== undefined && value !== ''));
     const abortController = new AbortController();
-    const response = await api.get('{{endpoint}}', { token, abortController, params });
+    const response = await api.get('/roles', { token, abortController, params });
     if (!response.data) return response;
     return { ...response, data: Roles.fromApiData(response.data) };
   }
 
   /**
-   * @param {{{model}}} data
+   * @param {Roles} data
    * @param {string} token
    * @returns {Promise<{
    *  code: HTTPStatusCode;
@@ -30,12 +31,12 @@ export default class {{name}} {
    * }}
    */
   static async store(data, token) {
-    return await api.post('{{endpoint}}', { body: {{model}}.toApiData(data), token });
+    return await api.post('/roles', { body: Roles.toApiData(data), token });
   }
 
   /**
    * @param {number} id
-   * @param {{{model}}} data
+   * @param {Roles} data
    * @param {string} token
    * @returns {Promise<{
    *  code: HTTPStatusCode;
@@ -45,7 +46,7 @@ export default class {{name}} {
    * }>}
    */
   static async update(id, data, token) {
-    return await api.patch(`{{endpoint}}/edit/${id}`, { body: {{model}}.toApiData(data), token });
+    return await api.patch(`/roles/edit/${id}`, { body: Roles.toApiData(data), token });
   }
 
   /**
@@ -58,7 +59,7 @@ export default class {{name}} {
    * }>}
    */
   static async delete(id, token) {
-    return await api.delete(`{{endpoint}}/delete/${id}`, { token });
+    return await api.delete(`/roles/delete/${id}`, { token });
   }
 
   /**
@@ -71,6 +72,6 @@ export default class {{name}} {
    * }>}
    */
   static async deleteBatch(ids, token) {
-    return await api.delete(`{{endpoint}}/multi-delete/?id=${ids.join(',')}`, { token });
+    return await api.delete(`/roles/multi-delete/?id=${ids.join(',')}`, { token });
   }
 }
