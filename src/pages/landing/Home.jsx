@@ -71,16 +71,16 @@ const Home = () => {
         ></div>
 
         <div className="z-10 mx-auto flex min-h-screen w-full max-w-screen-xl flex-col items-center justify-center gap-x-10 px-4 py-20 sm:px-6 sm:py-28">
-          <Typography.Title className="max-w-lg text-center text-3xl sm:text-4xl md:text-5xl lg:text-6xl">Lorem ipsum dolor sit amet consectetur adipiscing elit</Typography.Title>
-          <Typography.Text className="mb-12 max-w-xl px-4 text-center text-base sm:mb-24 sm:text-lg md:text-xl lg:mb-36">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          </Typography.Text>
+          <Typography.Title className="max-w-lg text-center text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
+            <span className="rounded-lg bg-primary-500 px-4 text-white">GEMA.ai</span> teman curhat cerdasmu.
+          </Typography.Title>
+          <Typography.Text className="mb-12 max-w-xl px-4 text-center text-base sm:mb-24 sm:text-lg md:text-xl lg:mb-36">Biarkan ceritamu bergema. Dengan GEMA.ai, setiap curhatan punya tempat untuk terdengar dan dimengerti.</Typography.Text>
           <div className="flex w-full flex-col items-center gap-3 px-4 sm:w-auto sm:flex-row sm:gap-x-4 sm:px-0">
-            <Button variant="solid" color="primary" size="large" shape="round" className="w-full sm:w-auto">
-              Primary
+            <Button variant="solid" color="primary" size="large" shape="round" className="w-full sm:w-auto" onClick={() => navigate('/register')}>
+              Daftar Sekarang
             </Button>
             <Button variant="solid" size="large" shape="round" className="w-full sm:w-auto">
-              Seccondary
+              Lihat Paket
             </Button>
           </div>
         </div>

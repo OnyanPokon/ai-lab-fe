@@ -15,7 +15,6 @@ export default class UsersService {
   static getAll({ token, ...filters }) {
     const params = Object.fromEntries(Object.entries(filters).filter(([_, v]) => v !== null && v !== undefined && v !== ''));
     const abortController = new AbortController();
-
     const response = api.get('/users', {
       token,
       signal: abortController.signal,
@@ -72,7 +71,7 @@ export default class UsersService {
    * }>}
    */
   static async delete(id, token) {
-    return await api.delete(`/users/delete/${id}`, { token });
+    return await api.delete(`/users/${id}`, { token });
   }
 
   /**

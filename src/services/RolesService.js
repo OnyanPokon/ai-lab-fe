@@ -12,12 +12,24 @@ export default class RolesService {
    *  data?: Roles[];
    * }>}
    * */
-  static async getAll({ token, ...filters }) {
-    const params = Object.fromEntries(Object.entries(filters).filter(([_, value]) => value !== null && value !== undefined && value !== ''));
+  static getAll({ token, ...filters }) {
+    const params = Object.fromEntries(Object.entries(filters).filter(([_, v]) => v !== null && v !== undefined && v !== ''));
     const abortController = new AbortController();
-    const response = await api.get('/roles', { token, abortController, params });
-    if (!response.data) return response;
-    return { ...response, data: Roles.fromApiData(response.data) };
+    const response = api.get('/roles', {
+      token,
+      signal: abortController.signal,
+      params
+    });
+
+    return {
+      abortController,
+      response,
+      parser: (apiData) => {
+        const roles = apiData?.roles ?? apiData?.data ?? apiData ?? [];
+
+        return Roles.fromApiData(roles);
+      }
+    };
   }
 
   /**

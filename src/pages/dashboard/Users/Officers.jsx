@@ -1,14 +1,14 @@
-import { Delete } from '@/components/dashboard/button';
+import { Delete, Detail, Edit } from '@/components/dashboard/button';
 import Modul from '@/constants/Modul';
 import { useAuth, useCrudModal, useNotification, usePagination, useService } from '@/hooks';
 import useAbortableService from '@/hooks/useAbortableService';
 import { RolesService, UsersService } from '@/services';
-import { Card, Space, Tag } from 'antd';
+import { Card, Space } from 'antd';
 import { UserManagement as UserModel } from '@/models';
 import React from 'react';
 import { Action } from '@/constants';
 import { DataTable, DataTableHeader } from '@/components';
-import { formFields, usersFilterFields } from './FormFields';
+import { formFields } from './FormFields';
 
 const { DELETE, UPDATE, READ } = Action;
 
@@ -20,17 +20,16 @@ const Users = () => {
   const { execute: fetchRoles, ...getAllRoles } = useAbortableService(RolesService.getAll, { onUnauthorized });
 
   const pagination = usePagination({ totalData: getAllUsers.totalData });
-  const [filterValues, setFilterValues] = React.useState({ search: '', role_id: '' });
+  const [filterValues, setFilterValues] = React.useState({ search: '' });
 
   const fetchUsers = React.useCallback(() => {
     execute({
       token: token,
       page: pagination.page,
       per_page: pagination.per_page,
-      search: filterValues.search,
-      role_id: filterValues.role_id
+      search: filterValues.search
     });
-  }, [execute, filterValues.role_id, filterValues.search, pagination.page, pagination.per_page, token]);
+  }, [execute, filterValues.search, pagination.page, pagination.per_page, token]);
 
   React.useEffect(() => {
     fetchUsers();
@@ -43,13 +42,14 @@ const Users = () => {
   const roles = getAllRoles.data ?? [];
 
   const storeUser = useService(UsersService.store, onUnauthorized);
+  const updateUser = useService(UsersService.store, onUnauthorized);
   const deleteUser = useService(UsersService.delete, onUnauthorized);
 
   const column = [
     {
       title: 'Nama',
-      dataIndex: 'nama',
-      sorter: (a, b) => a.nama.length - b.nama.length,
+      dataIndex: 'name',
+      sorter: (a, b) => a.name.length - b.name.length,
       searchable: true
     },
     {
@@ -57,22 +57,6 @@ const Users = () => {
       dataIndex: 'email',
       sorter: (a, b) => a.email.length - b.email.length,
       searchable: true
-    },
-    {
-      title: 'Role',
-      dataIndex: ['role', 'slug'],
-      sorter: (a, b) => a.role.slug.length - b.role.slug.length,
-      searchable: true,
-      render: (_, record) => {
-        const slug = record.role?.slug;
-
-        let color = 'default';
-        if (slug === 'admin') color = '#4647ba';
-        else if (slug === 'user') color = '#447ed3';
-        else color = 'gray';
-
-        return <Tag color={color}>{record.role?.slug}</Tag>;
-      }
     }
   ];
 
@@ -81,13 +65,43 @@ const Users = () => {
       title: 'Aksi',
       render: (_, record) => (
         <Space size="small">
+          <Edit
+            title={`Edit ${Modul.USER}`}
+            model={UserModel}
+            onClick={() => {
+              modal.edit({
+                title: `Edit ${Modul.USER}`,
+                formFields: formFields({ options: { roles } }),
+                onSubmit: async (values) => {
+                  const { message, isSuccess } = await updateUser.execute(record.id, { ...values, role: 'karyawan' }, token);
+                  if (isSuccess) {
+                    success('Berhasil', message);
+                    fetchUsers({ token: token, page: pagination.page, per_page: pagination.per_page });
+                  } else {
+                    error('Gagal', message);
+                  }
+                  return isSuccess;
+                }
+              });
+            }}
+          />
+          <Detail
+            title={`Detail ${Modul.USER}`}
+            model={UserModel}
+            onClick={() => {
+              modal.show.description({
+                title: record.name,
+                data: []
+              });
+            }}
+          />
           <Delete
             title={`Delete ${Modul.USER}`}
             model={UserModel}
             onClick={() => {
               modal.delete.default({
                 title: `Delete ${Modul.USER}`,
-                data: record,
+                data: { ...record, role: record.role.id },
                 onSubmit: async () => {
                   const { isSuccess, message } = await deleteUser.execute(record.id, token);
                   if (isSuccess) {
@@ -123,23 +137,10 @@ const Users = () => {
     });
   };
 
-  const filter = {
-    formFields: usersFilterFields({ options: { roles } }),
-    initialData: {
-      role_id: filterValues.role_id
-    },
-    isLoading: getAllUsers.isLoading,
-    onSubmit: (values) => {
-      setFilterValues({
-        role_id: values.role_id
-      });
-    }
-  };
-
   return (
     <div>
       <Card>
-        <DataTableHeader model={UserModel} modul={Modul.USER} filter={filter} onStore={onCreate} selectedData={selectedData} onSearch={(values) => setFilterValues({ ...filterValues, search: values })} />
+        <DataTableHeader model={UserModel} modul={Modul.USER} onStore={onCreate} selectedData={selectedData} onSearch={(values) => setFilterValues({ ...filterValues, search: values })} />
         <div className="w-full max-w-full overflow-x-auto">
           <DataTable data={users} columns={column} loading={getAllUsers.isLoading} map={(user) => ({ key: user.id, ...user })} handleSelectedData={(_, selectedRows) => setSelectedData(selectedRows)} pagination={pagination} />
         </div>

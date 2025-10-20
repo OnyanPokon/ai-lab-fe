@@ -1,10 +1,10 @@
 import { InputType } from '@/constants';
 import Modul from '@/constants/Modul';
 
-export const formFields = () => [
+export const formFields = ({ options }) => [
   {
     label: `Nama ${Modul.USER}`,
-    name: 'nama',
+    name: 'name',
     type: InputType.TEXT,
     rules: [
       {
@@ -27,5 +27,32 @@ export const formFields = () => [
         message: 'Format email tidak valid'
       }
     ]
+  },
+  {
+    label: `Peran ${Modul.USER}`,
+    name: 'role_id',
+    type: InputType.SELECT,
+    options: options.roles.map((item) => ({
+      label: item.nama,
+      value: item.id
+    })),
+    rules: [
+      {
+        required: true,
+        message: `Nama ${Modul.ROLES} harus diisi`
+      }
+    ]
+  }
+];
+
+export const usersFilterFields = ({ options }) => [
+  {
+    label: `Peran ${Modul.USER}`,
+    name: 'role_id',
+    type: InputType.SELECT,
+    options: options.roles.map((item) => ({
+      label: item.nama,
+      value: item.id
+    }))
   }
 ];

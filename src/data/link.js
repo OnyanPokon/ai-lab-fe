@@ -35,9 +35,12 @@ export const dashboardLink = [
     children: [{ path: '/dashboard', label: 'Dashboard', element: Dashboard.Dashboard }]
   },
   {
-    label: 'Master Data',
+    label: 'Manajemen Pengguna',
     icon: TableOutlined,
-    children: [{ path: '/users', label: 'Pengguna', element: Dashboard.Users, permission: [Action.READ, Model.User] }]
+    children: [
+      { path: '/users', label: 'Pengguna', element: Dashboard.Users, permission: [Action.READ, Model.User] },
+      { path: '/roles', label: 'Peran', element: Dashboard.Roles, permission: [Action.READ, Model.Roles] }
+    ]
   }
 ].map((item) => ({
   ...item,

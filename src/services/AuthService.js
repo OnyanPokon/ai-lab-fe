@@ -1,7 +1,7 @@
 import { User } from '@/models';
 import api from '@/utils/api';
 
-export default class AuthService {
+export default class dAuthService {
   /**
    * Logs in a user with the provided email and password.
    * @param {string} email - The email of the user.
@@ -35,6 +35,25 @@ export default class AuthService {
     const response = await api.get('/auth/profile', { token });
     if (!response.data) return response;
     return { ...response, data: User.fromApiData(response.data, token) };
+  }
+
+  /**
+   * @param {string} token
+   * @returns {Promise<Promise<{
+   *   code: HTTPStatusCode,
+   *   status: boolean,
+   *   message: string,
+   *   data?: User
+   * }>}
+   */
+  static async getAllPermissions(token) {
+    const response = await api.get('/permissions', { token });
+    if (!response.data) return response;
+    return { ...response, data: response.data };
+  }
+
+  static async register(data) {
+    return await api.post('/auth/register', { body: data });
   }
 
   static async forgot(email) {
