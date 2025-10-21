@@ -20,7 +20,7 @@ const Users = () => {
   const { execute: fetchRoles, ...getAllRoles } = useAbortableService(RolesService.getAll, { onUnauthorized });
 
   const pagination = usePagination({ totalData: getAllUsers.totalData });
-  const [filterValues, setFilterValues] = React.useState({ search: '', role_id: '' });
+  const [filterValues, setFilterValues] = React.useState({ search: '', role_id: null });
 
   const fetchUsers = React.useCallback(() => {
     execute({

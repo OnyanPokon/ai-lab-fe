@@ -1,7 +1,7 @@
 import { DashboardFooter, DashboardSider } from '@/components';
 import { useAuth } from '@/hooks';
 import { useTheme } from '@/hooks/useTheme';
-import { LogoutOutlined, MenuOutlined, MoonOutlined, SunOutlined, UserOutlined } from '@ant-design/icons';
+import { LogoutOutlined, MenuOutlined, MoonOutlined, SettingOutlined, SunOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Button, Dropdown, Layout, Skeleton, Space, theme } from 'antd';
 import { Content, Header } from 'antd/es/layout/layout';
 import { useEffect, useMemo, useState } from 'react';
@@ -19,6 +19,8 @@ const Dashboard = () => {
     navigate(`/auth/login?redirect=${pathname}`);
   }, [navigate, token, pathname]);
 
+  console.log(user);
+
   // const breadcrumbItems = generateBreadcrumb(dashboardLink, pathname);
 
   const items = useMemo(
@@ -29,6 +31,15 @@ const Dashboard = () => {
           <button onClick={() => navigate('/dashboard/profile-settings')} className="flex min-w-32 items-center gap-x-2">
             <UserOutlined />
             Pengaturan Profil
+          </button>
+        )
+      },
+      {
+        key: '2',
+        label: (
+          <button onClick={() => navigate('/dashboard/pengaturan')} className="flex min-w-32 items-center gap-x-2">
+            <SettingOutlined />
+            Pengaturan Website
           </button>
         )
       },

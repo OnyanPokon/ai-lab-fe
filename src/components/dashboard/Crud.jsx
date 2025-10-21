@@ -211,7 +211,7 @@ const Crud = ({ formFields, initialData, onSubmit = () => {}, type = '', isLoadi
   };
 
   return (
-    <Form layout="vertical" className="mt-6 flex flex-col gap-y-2" form={form} onFinish={onSubmit} onValuesChange={handleValuesChange}>
+    <Form layout="vertical" className="mt-2 flex flex-col gap-y-2" form={form} onFinish={onSubmit} onValuesChange={handleValuesChange}>
       {formFields.map(({ renderIf, ...field }, index) => {
         if (renderIf && !renderIf(realtimeData)) return null;
         return (

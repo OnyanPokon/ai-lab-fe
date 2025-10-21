@@ -38,8 +38,8 @@ export const dashboardLink = [
     label: 'Manajemen Pengguna',
     icon: TableOutlined,
     children: [
-      { path: '/users', label: 'Pengguna', element: Dashboard.Users, permission: [Action.READ, Model.User] },
-      { path: '/roles', label: 'Peran', element: Dashboard.Roles, permission: [Action.READ, Model.Roles] }
+      { path: '/users', label: 'Pengguna', element: Dashboard.Users, permissions: [[Action.READ, Model.UserManagement]] },
+      { path: '/roles', label: 'Peran', element: Dashboard.Roles, permissions: [[Action.READ, Model.Roles]] }
     ]
   }
 ].map((item) => ({

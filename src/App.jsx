@@ -8,6 +8,7 @@ import './index.css';
 import { flattenLandingLinks } from './utils/landingLink';
 import { Notfound } from './pages/result';
 import { Register } from './pages/landing';
+import { Settings } from './pages/dashboard';
 
 function App() {
   const { user } = useAuth();
@@ -37,7 +38,7 @@ function App() {
                 const userCantDoAnyOfThat = hasPermissions && (!user || user.cantDoAny(...permissions));
                 const userIsNotInAnyOfThatRole = hasRoles && (!user || !roles.some((role) => user.is(role)));
 
-                if (userCantDoAnyOfThat && userIsNotInAnyOfThatRole) {
+                if (userCantDoAnyOfThat || userIsNotInAnyOfThatRole) {
                   return {
                     path,
                     element: <Result status="403" subTitle="Anda tidak memiliki akses ke halaman ini" title="Forbidden" />
@@ -48,9 +49,11 @@ function App() {
                   element: <Element />
                 };
               })
-            )
+            ),
+            { path: '/dashboard/pengaturan', element: <Settings /> }
           ]
         },
+
         {
           element: <AuthLayout />,
           children: authLink.map(({ path, element: Element }) => ({
