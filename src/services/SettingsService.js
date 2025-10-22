@@ -11,7 +11,7 @@ export default class SettingsService {
    * }>}
    * */
   static async getAll(token) {
-    const response = await api.get('/settings', { token });
+    const response = await api.get('/settings/latest/settings', { token });
     if (!response.data) return response;
     return { ...response, data: response.data };
   }

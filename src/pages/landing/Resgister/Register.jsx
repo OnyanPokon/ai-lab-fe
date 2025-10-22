@@ -1,5 +1,6 @@
 import { useNotification, useService } from '@/hooks';
 import { AuthService } from '@/services';
+import { supabase } from '@/utils/supabaseClient';
 import { GoogleOutlined, UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Typography, Divider, Card } from 'antd';
 import { Sparkles, Heart, Shield, MessageCircle, Star, Zap, Mail } from 'lucide-react';
@@ -22,8 +23,6 @@ const Register = () => {
       success('Berhasil', message);
       setRegistrationEmail(values.email);
       setIsVerificationStep(true);
-      // Auto hide after 5 seconds (optional)
-      // setTimeout(() => navigate('/login'), 5000);
     } else {
       error('Gagal', message);
     }
@@ -32,6 +31,14 @@ const Register = () => {
 
   const handleBackToLogin = () => {
     navigate('/login');
+  };
+
+  const handleGoogleAuth = async () => {
+    try {
+      await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } });
+    } catch (error) {
+      console.error('Error Signing Up With Google:', error.message);
+    }
   };
 
   return (
@@ -113,7 +120,7 @@ const Register = () => {
               </div>
 
               <Card className="shadow-2xl backdrop-blur-sm">
-                <Button icon={<GoogleOutlined />} size="large" className="mb-4 w-full">
+                <Button onClick={handleGoogleAuth} icon={<GoogleOutlined />} size="large" className="mb-4 w-full">
                   Daftar dengan Google
                 </Button>
                 <Divider plain className="text-sm text-gray-400">

@@ -3,7 +3,7 @@ import Modul from '@/constants/Modul';
 import { useAuth, useCrudModal, useNotification, usePagination, useService } from '@/hooks';
 import useAbortableService from '@/hooks/useAbortableService';
 import { RolesService, UsersService } from '@/services';
-import { Card, Space, Tag } from 'antd';
+import { Card, Skeleton, Space, Tag } from 'antd';
 import { UserManagement as UserModel } from '@/models';
 import React from 'react';
 import { Action } from '@/constants';
@@ -139,10 +139,12 @@ const Users = () => {
   return (
     <div>
       <Card>
-        <DataTableHeader model={UserModel} modul={Modul.USER} filter={filter} onStore={onCreate} selectedData={selectedData} onSearch={(values) => setFilterValues({ ...filterValues, search: values })} />
-        <div className="w-full max-w-full overflow-x-auto">
-          <DataTable data={users} columns={column} loading={getAllUsers.isLoading} map={(user) => ({ key: user.id, ...user })} handleSelectedData={(_, selectedRows) => setSelectedData(selectedRows)} pagination={pagination} />
-        </div>
+        <Skeleton loading={getAllUsers.isLoading}>
+          <DataTableHeader model={UserModel} modul={Modul.USER} filter={filter} onStore={onCreate} selectedData={selectedData} onSearch={(values) => setFilterValues({ ...filterValues, search: values })} />
+          <div className="w-full max-w-full overflow-x-auto">
+            <DataTable data={users} columns={column} loading={getAllUsers.isLoading} map={(user) => ({ key: user.id, ...user })} handleSelectedData={(_, selectedRows) => setSelectedData(selectedRows)} pagination={pagination} />
+          </div>
+        </Skeleton>
       </Card>
     </div>
   );

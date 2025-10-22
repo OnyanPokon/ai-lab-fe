@@ -50,7 +50,7 @@ function App() {
                 };
               })
             ),
-            { path: '/dashboard/pengaturan', element: <Settings /> }
+            { path: '/dashboard/settings', element: <Settings /> }
           ]
         },
 

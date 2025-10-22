@@ -1,10 +1,11 @@
 import { useAuth, useNotification, useService } from '@/hooks';
 import { SettingsService } from '@/services';
-import { Anchor, Button, Card, Form, Input, InputNumber, Switch } from 'antd';
+import { Anchor, Button, Card, Form, Input, InputNumber, Skeleton, Switch } from 'antd';
 import React from 'react';
 
 const Settings = () => {
   const { token } = useAuth();
+  const [form] = Form.useForm();
   const { success, error } = useNotification();
   const { execute, ...getAllSettings } = useService(SettingsService.getAll);
   const saveSettings = useService(SettingsService.update);
@@ -17,7 +18,13 @@ const Settings = () => {
     fetchSettings();
   }, [fetchSettings, token]);
 
-  const settings = React.useMemo(() => getAllSettings.data ?? [], [getAllSettings.data]);
+  const settings = React.useMemo(() => getAllSettings.data ?? {}, [getAllSettings.data]);
+
+  React.useEffect(() => {
+    if (settings) {
+      form.setFieldsValue(settings);
+    }
+  }, [form, settings]);
 
   const anchorItems = [
     {
@@ -39,18 +46,19 @@ const Settings = () => {
       return <Input className="w-full" placeholder={`Masukan ${key}`} size="large" />;
     }
   };
+
   return (
     <div className="grid grid-cols-12 gap-4">
       <div className="col-span-10 flex w-full flex-col gap-y-4">
         <div className="flex w-full flex-col gap-y-6">
-          {settings.map((item) => (
-            <Card key={item.id} title={'Pengaturan 1'}>
+          <Card title={'Pengaturan'}>
+            <Skeleton loading={getAllSettings.isLoading}>
               <Form
-                initialValues={item}
                 layout="vertical"
                 className="w-full"
+                form={form}
                 onFinish={async (values) => {
-                  const { message, isSuccess } = await saveSettings.execute(item.id, values, token);
+                  const { message, isSuccess } = await saveSettings.execute(settings.id, values, token);
                   if (isSuccess) {
                     success('Berhasil', message);
                   } else {
@@ -59,7 +67,7 @@ const Settings = () => {
                   return isSuccess;
                 }}
               >
-                {Object.entries(item)
+                {Object.entries(settings)
                   .filter(([key]) => !['id', 'created_at', 'updated_at'].includes(key))
                   .map(([key, value]) => (
                     <Form.Item
@@ -83,8 +91,8 @@ const Settings = () => {
                   </Button>
                 </Form.Item>
               </Form>
-            </Card>
-          ))}
+            </Skeleton>
+          </Card>
         </div>
       </div>
       <div className="col-span-2">

@@ -37,7 +37,7 @@ const Dashboard = () => {
       {
         key: '2',
         label: (
-          <button onClick={() => navigate('/dashboard/pengaturan')} className="flex min-w-32 items-center gap-x-2">
+          <button onClick={() => navigate('/dashboard/settings')} className="flex min-w-32 items-center gap-x-2">
             <SettingOutlined />
             Pengaturan Website
           </button>
