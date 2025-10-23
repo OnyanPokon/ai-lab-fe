@@ -1,6 +1,7 @@
 enum Modul {
   USER = 'Pengguna',
-  ROLES = 'Peran'
+  ROLES = 'Peran',
+  MODE = 'Mode'
 }
 
 export default Modul;

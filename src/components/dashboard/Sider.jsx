@@ -1,6 +1,6 @@
 import { dashboardLink } from '@/data/link';
 import { useAuth } from '@/hooks';
-import { Drawer, Grid, Menu, Tooltip } from 'antd';
+import { Drawer, Grid, Image, Menu, Tooltip } from 'antd';
 import Sider from 'antd/es/layout/Sider';
 import PropTypes from 'prop-types';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -31,39 +31,60 @@ const DashboardSider = ({ collapsed, onCloseMenu }) => {
 
       return user.eitherCan(...permissions) || user.eitherIs(...roles);
     })
-    .map(({ label, children, icon: Icon }) => ({
-      key: label,
-      label: (
-        <Tooltip title={label} placement="right" color="blue">
-          <span>{label}</span>
-        </Tooltip>
-      ),
-      icon: (
-        <Tooltip title={label} placement="right" color="blue">
-          <Icon />
-        </Tooltip>
-      ),
-      children: children
-        .filter(({ permissions, roles }) => {
-          const hasPermission = !permissions || user?.eitherCan(...permissions);
-          const hasRole = !roles || user?.eitherIs(...roles);
-          return hasPermission && hasRole;
-        })
-        .map(({ path, label }) => ({
-          key: path,
+    .map(({ label, icon: Icon, children, path }) => {
+      if (children && children.length > 0) {
+        return {
+          key: label,
           label: (
             <Tooltip title={label} placement="right" color="blue">
               <span>{label}</span>
             </Tooltip>
           ),
-          onClick: () => navigate(path)
-        }))
-    }));
+          icon: (
+            <Tooltip title={label} placement="right" color="blue">
+              <Icon />
+            </Tooltip>
+          ),
+          children: children
+            .filter(({ permissions, roles }) => {
+              const hasPermission = !permissions || user?.eitherCan(...permissions);
+              const hasRole = !roles || user?.eitherIs(...roles);
+              return hasPermission && hasRole;
+            })
+            .map(({ path, label }) => ({
+              key: path,
+              label: (
+                <Tooltip title={label} placement="right" color="blue">
+                  <span>{label}</span>
+                </Tooltip>
+              ),
+              onClick: () => navigate(path)
+            }))
+        };
+      }
+
+      return {
+        key: path,
+        label: (
+          <Tooltip title={label} placement="right" color="blue">
+            <span>{label}</span>
+          </Tooltip>
+        ),
+        icon: (
+          <Tooltip title={label} placement="right" color="blue">
+            <Icon />
+          </Tooltip>
+        ),
+        onClick: () => navigate(path)
+      };
+    });
 
   return isDesktop ? (
     <Sider theme="light" className="p-4" width={230} collapsed={collapsed}>
       <Link to="/">
-        <div className="mb-4 flex w-full items-center justify-center"></div>
+        <div className="mb-4 flex w-full items-center justify-center">
+          <Image width={40} preview={false} src="/image_asset/brand/brand_logo.png" />
+        </div>
       </Link>
       <Menu className="w-full !border-none font-semibold" theme="light" mode="inline" defaultSelectedKeys={[pathname]} items={menuItems} />
     </Sider>

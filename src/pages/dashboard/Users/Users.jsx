@@ -107,11 +107,12 @@ const Users = () => {
   }
 
   const onCreate = () => {
+    const adminRoleId = roles.find((role) => role.slug === 'admin')?.id;
     modal.create({
       title: `Tambah ${Modul.USER}`,
-      formFields: formFields({ options: { roles } }),
+      formFields: formFields(),
       onSubmit: async (values) => {
-        const { message, isSuccess } = await storeUser.execute({ ...values, password: 'password' }, token);
+        const { message, isSuccess } = await storeUser.execute({ ...values, role_id: adminRoleId }, token);
         if (isSuccess) {
           success('Berhasil', message);
           fetchUsers({ token: token, page: pagination.page, per_page: pagination.per_page });

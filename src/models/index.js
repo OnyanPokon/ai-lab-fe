@@ -3,3 +3,4 @@ export { default as User } from './User';
 export { default as UserManagement } from './UserManagement';
 export { default as Model } from './Model';
 export { default as Roles } from './Roles';
+export { default as Modes } from './Modes';

@@ -1,7 +1,7 @@
 import { CrudModalType, InputType } from '@/constants';
 import clientAsset from '@/utils/clientAsset';
 import strings from '@/utils/strings';
-import { DeleteOutlined, InboxOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EyeInvisibleOutlined, EyeOutlined, InboxOutlined } from '@ant-design/icons';
 import { Button, DatePicker, Form, Input, InputNumber, Modal } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import Dragger from 'antd/es/upload/Dragger';
@@ -22,6 +22,7 @@ export default function CrudModal({ isModalOpen, data: initialData, close, title
   const [form] = Form.useForm();
   const [realtimeData, setRealtimeData] = useState(initialData);
   const [searchOptions, setSearchOptions] = useState(null);
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   useEffect(() => {
     if (isModalOpen) {
@@ -76,8 +77,20 @@ export default function CrudModal({ isModalOpen, data: initialData, close, title
     field.readOnly = type === CrudModalType.SHOW || type === CrudModalType.DELETE;
 
     switch (field.type) {
-      case InputType.TEXT:
-        return <Input placeholder={`Masukan ${field.label}`} size="large" readOnly={field.readOnly} {...field.extra} />;
+      case InputType.TEXT: {
+        // handle password field
+        const isPasswordField = field.extra?.type === 'password';
+
+        return (
+          <Input
+            placeholder={`Masukan ${field.label}`}
+            size="large"
+            readOnly={field.readOnly}
+            type={isPasswordField ? (passwordVisible ? 'text' : 'password') : field.extra?.type || 'text'}
+            suffix={isPasswordField ? passwordVisible ? <EyeOutlined onClick={() => setPasswordVisible(false)} /> : <EyeInvisibleOutlined onClick={() => setPasswordVisible(true)} /> : field.extra?.suffix}
+          />
+        );
+      }
 
       case InputType.NUMBER:
         return <InputNumber placeholder={`Masukan ${field.label}`} min={field.min} max={field.max} className="w-full" size="large" readOnly={field.readOnly} {...field.extra} />;

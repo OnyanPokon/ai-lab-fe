@@ -19,8 +19,6 @@ const Dashboard = () => {
     navigate(`/auth/login?redirect=${pathname}`);
   }, [navigate, token, pathname]);
 
-  console.log(user);
-
   // const breadcrumbItems = generateBreadcrumb(dashboardLink, pathname);
 
   const items = useMemo(
@@ -44,7 +42,7 @@ const Dashboard = () => {
         )
       },
       {
-        key: '2',
+        key: '3',
         label: (
           <button onClick={logout} className="text-color-danger-500 flex min-w-32 items-center gap-x-2">
             <LogoutOutlined />

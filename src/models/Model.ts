@@ -1,9 +1,10 @@
-type ModelKeys = 'user' | 'role';
+type ModelKeys = 'user' | 'role' | 'mode';
 
 export default abstract class Model {
   static children: { [key in ModelKeys]?: ModelChildren | ModelChildren[] } = {
     user: undefined,
-    role: undefined
+    role: undefined,
+    mode: undefined
   };
 }
 

@@ -1,7 +1,7 @@
 import { InputType } from '@/constants';
 import Modul from '@/constants/Modul';
 
-export const formFields = ({ options }) => [
+export const formFields = () => [
   {
     label: `Nama ${Modul.USER}`,
     name: 'name',
@@ -29,17 +29,14 @@ export const formFields = ({ options }) => [
     ]
   },
   {
-    label: `Peran ${Modul.USER}`,
-    name: 'role_id',
-    type: InputType.SELECT,
-    options: options.roles.map((item) => ({
-      label: item.nama,
-      value: item.id
-    })),
+    label: `Password ${Modul.USER}`,
+    name: 'password',
+    type: InputType.TEXT,
+    extra: { type: 'password' },
     rules: [
       {
         required: true,
-        message: `Nama ${Modul.ROLES} harus diisi`
+        message: `Password ${Modul.USER} harus diisi`
       }
     ]
   }

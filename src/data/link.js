@@ -3,7 +3,7 @@ import * as Auth from '@/pages/auth';
 import * as Dashboard from '@/pages/dashboard';
 import * as Landing from '@/pages/landing';
 import * as Model from '@/models';
-import { DashboardOutlined, TableOutlined } from '@ant-design/icons';
+import { CommentOutlined, DashboardOutlined, TableOutlined } from '@ant-design/icons';
 
 export const landingLink = [
   {
@@ -41,11 +41,18 @@ export const dashboardLink = [
       { path: '/users', label: 'Pengguna', element: Dashboard.Users, permissions: [[Action.READ, Model.UserManagement]] },
       { path: '/roles', label: 'Peran', element: Dashboard.Roles, permissions: [[Action.READ, Model.Roles]] }
     ]
+  },
+  {
+    label: 'Mode',
+    icon: CommentOutlined,
+    path: '/mode',
+    element: Dashboard.Mode,
+    permissions: [[Action.READ, Model.Modes]]
   }
 ].map((item) => ({
   ...item,
-  permissions: item.children.flatMap((child) => child.permissions).filter((permission) => permission),
-  roles: item.children.flatMap((child) => child.roles).filter((role) => role)
+  permissions: [...(item.permissions || []), ...(item.children?.flatMap((child) => child.permissions || []) ?? [])].filter(Boolean),
+  roles: [...(item.roles || []), ...(item.children?.flatMap((child) => child.roles || []) ?? [])].filter(Boolean)
 }));
 
 export const authLink = [

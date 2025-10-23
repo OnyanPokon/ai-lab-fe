@@ -1,21 +1,21 @@
 /* eslint-disable no-unused-vars */
-import { {{model}} } from '@/models';
+import { Modes } from '@/models';
 import api from '@/utils/api';
 
-export default class {{name}} {
+export default class ModesService {
   /**
    * @param {string} token
    * @returns {Promise<{
    *  code: HTTPStatusCode;
    *  status: boolean;
    *  message: string;
-   *  data?: {{model}}[];
+   *  data?: Modes[];
    * }>}
    * */
   static getAll({ token, ...filters }) {
     const params = Object.fromEntries(Object.entries(filters).filter(([_, v]) => v !== null && v !== undefined && v !== ''));
     const abortController = new AbortController();
-    const response = api.get('{{endpoint}}', {
+    const response = api.get('/modes', {
       token,
       signal: abortController.signal,
       params
@@ -25,14 +25,14 @@ export default class {{name}} {
       abortController,
       response,
       parser: (apiData) => {
-        const {{model}} = apiData?.{{model}} ?? apiData?.data ?? apiData ?? [];
-        return {{model}}.fromApiData({{model}});
+        const modes = apiData?.modes ?? apiData?.data ?? apiData ?? [];
+        return Modes.fromApiData(modes);
       }
     };
   }
 
   /**
-   * @param {{{model}}} data
+   * @param {Modes} data
    * @param {string} token
    * @returns {Promise<{
    *  code: HTTPStatusCode;
@@ -42,12 +42,12 @@ export default class {{name}} {
    * }}
    */
   static async store(data, token) {
-    return await api.post('{{endpoint}}', { body: {{model}}.toApiData(data), token });
+    return await api.post('/modes', { body: Modes.toApiData(data), token });
   }
 
   /**
    * @param {number} id
-   * @param {{{model}}} data
+   * @param {Modes} data
    * @param {string} token
    * @returns {Promise<{
    *  code: HTTPStatusCode;
@@ -57,7 +57,7 @@ export default class {{name}} {
    * }>}
    */
   static async update(id, data, token) {
-    return await api.patch(`{{endpoint}}/${id}`, { body: {{model}}.toApiData(data), token });
+    return await api.patch(`/modes/${id}`, { body: Modes.toApiData(data), token });
   }
 
   /**
@@ -70,7 +70,7 @@ export default class {{name}} {
    * }>}
    */
   static async delete(id, token) {
-    return await api.delete(`{{endpoint}}/${id}`, { token });
+    return await api.delete(`/modes/${id}`, { token });
   }
 
   /**
@@ -83,6 +83,6 @@ export default class {{name}} {
    * }>}
    */
   static async deleteBatch(ids, token) {
-    return await api.delete(`{{endpoint}}/multi-delete/?id=${ids.join(',')}`, { token });
+    return await api.delete(`/modes/multi-delete/?id=${ids.join(',')}`, { token });
   }
 }

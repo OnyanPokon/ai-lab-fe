@@ -1,4 +1,4 @@
-import { Delete, Detail, Edit } from '@/components/dashboard/button';
+import { Delete, Edit } from '@/components/dashboard/button';
 import Modul from '@/constants/Modul';
 import { useAuth, useCrudModal, useNotification, usePagination, useService } from '@/hooks';
 import useAbortableService from '@/hooks/useAbortableService';
@@ -80,17 +80,6 @@ const Roles = () => {
               });
             }}
           />
-          <Detail
-            title={`Detail ${Modul.ROLES}`}
-            model={RolesModel}
-            onClick={() => {
-              modal.show.description({
-                title: record.name,
-                data: []
-              });
-            }}
-          />
-
           <Delete
             title={`Delete ${Modul.ROLES}`}
             model={RolesModel}
