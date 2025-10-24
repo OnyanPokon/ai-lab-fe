@@ -1,4 +1,4 @@
-import { Action } from '@/constants';
+import { Action, Role } from '@/constants';
 import * as Auth from '@/pages/auth';
 import * as Dashboard from '@/pages/dashboard';
 import * as Landing from '@/pages/landing';
@@ -37,6 +37,7 @@ export const dashboardLink = [
   {
     label: 'Manajemen Pengguna',
     icon: TableOutlined,
+    roles: [Role.ADMIN],
     children: [
       { path: '/users', label: 'Pengguna', element: Dashboard.Users, permissions: [[Action.READ, Model.UserManagement]] },
       { path: '/roles', label: 'Peran', element: Dashboard.Roles, permissions: [[Action.READ, Model.Roles]] }
@@ -45,8 +46,17 @@ export const dashboardLink = [
   {
     label: 'Mode',
     icon: CommentOutlined,
+    roles: [Role.ADMIN],
     path: '/mode',
     element: Dashboard.Mode,
+    permissions: [[Action.READ, Model.Modes]]
+  },
+  {
+    label: 'Mode',
+    icon: CommentOutlined,
+    roles: [Role.USER],
+    path: '/mode_list',
+    element: Dashboard.ModeList,
     permissions: [[Action.READ, Model.Modes]]
   }
 ].map((item) => ({

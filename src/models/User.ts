@@ -46,6 +46,10 @@ export default class User extends Model {
     return this.role === role;
   }
 
+  eitherIs(...roles: Role[]) {
+    return roles.some((role) => this.is(role));
+  }
+
   can(action: Action, model: ModelChildren) {
     return this.permissions.some((permission) => permission.can(action, model));
   }
@@ -64,7 +68,8 @@ export default class User extends Model {
 
   static fromApiData(apiData: IncomingApiData, token: string): User {
     const roles = {
-      Administrator: Role.ADMIN
+      Administrator: Role.ADMIN,
+      User: Role.USER
     };
     const role = roles[apiData.role.name as keyof typeof roles] || null;
     const uniquePermissions = Permission.mergeUnique(apiData.role?.permissions, apiData.permissions);

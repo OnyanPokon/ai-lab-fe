@@ -9,6 +9,7 @@ import { flattenLandingLinks } from './utils/landingLink';
 import { Notfound } from './pages/result';
 import { Register } from './pages/landing';
 import { Settings } from './pages/dashboard';
+import { Role } from './constants';
 
 function App() {
   const { user } = useAuth();
@@ -70,8 +71,10 @@ function App() {
 
               return [];
             }),
-
-            { path: '/dashboard/pengaturan', element: <Settings /> }
+            {
+              path: '/dashboard/pengaturan',
+              element: user && user.is(Role.ADMIN) ? <Settings /> : <Result status="403" subTitle="Anda tidak memiliki akses ke halaman ini" title="Forbidden" />
+            }
           ]
         },
         {

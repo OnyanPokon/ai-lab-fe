@@ -3,7 +3,7 @@ import Modul from '@/constants/Modul';
 import { useAuth, useCrudModal, useNotification, usePagination, useService } from '@/hooks';
 import useAbortableService from '@/hooks/useAbortableService';
 import { AuthService, RolesService } from '@/services';
-import { Card, Space } from 'antd';
+import { Card, Skeleton, Space } from 'antd';
 import { Roles as RolesModel } from '@/models';
 import React from 'react';
 import { Action } from '@/constants';
@@ -125,10 +125,12 @@ const Roles = () => {
   return (
     <div>
       <Card>
-        <DataTableHeader model={RolesModel} modul={Modul.ROLES} onStore={onCreate} selectedData={selectedData} onSearch={(values) => setFilterValues({ ...filterValues, search: values })} />
-        <div className="w-full max-w-full overflow-x-auto">
-          <DataTable data={roles} columns={column} loading={getAllRoles.isLoading} map={(role) => ({ key: role.id, ...role })} handleSelectedData={(_, selectedRows) => setSelectedData(selectedRows)} pagination={pagination} />
-        </div>
+        <Skeleton loading={getAllRoles.isLoading}>
+          <DataTableHeader model={RolesModel} modul={Modul.ROLES} onStore={onCreate} selectedData={selectedData} onSearch={(values) => setFilterValues({ ...filterValues, search: values })} />
+          <div className="w-full max-w-full overflow-x-auto">
+            <DataTable data={roles} columns={column} loading={getAllRoles.isLoading} map={(role) => ({ key: role.id, ...role })} handleSelectedData={(_, selectedRows) => setSelectedData(selectedRows)} pagination={pagination} />
+          </div>
+        </Skeleton>
       </Card>
     </div>
   );

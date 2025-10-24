@@ -29,7 +29,7 @@ const DashboardSider = ({ collapsed, onCloseMenu }) => {
       const permissionSpecific = hasPermission && !hasRole;
       if (permissionSpecific) return user.eitherCan(...permissions);
 
-      return user.eitherCan(...permissions) || user.eitherIs(...roles);
+      return (!hasRole && user.eitherCan(...permissions)) || (!hasPermission && user.eitherIs(...roles)) || (hasRole && hasPermission && user.eitherIs(...roles) && user.eitherCan(...permissions));
     })
     .map(({ label, icon: Icon, children, path }) => {
       if (children && children.length > 0) {

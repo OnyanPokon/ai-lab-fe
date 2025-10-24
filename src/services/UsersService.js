@@ -32,6 +32,18 @@ export default class UsersService {
     };
   }
 
+  static async getTrialSummary(user_id, token) {
+    const response = await api.get(`/trials/user/${user_id}/summary`, { token });
+    if (!response.data) return response;
+    return { ...response, data: response.data };
+  }
+
+  static async getQuotaSummary(user_id, token) {
+    const response = await api.get(`/quota/user/${user_id}/summary`, { token });
+    if (!response.data) return response;
+    return { ...response, data: response.data };
+  }
+
   /**
    * @param {Users} data
    * @param {string} token

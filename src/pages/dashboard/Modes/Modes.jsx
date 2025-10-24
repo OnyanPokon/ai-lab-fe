@@ -3,7 +3,7 @@ import Modul from '@/constants/Modul';
 import { useAuth, useCrudModal, useNotification, usePagination, useService } from '@/hooks';
 import useAbortableService from '@/hooks/useAbortableService';
 import { ModesService } from '@/services';
-import { Card, Space } from 'antd';
+import { Card, Skeleton, Space } from 'antd';
 import { Modes as ModeModels } from '@/models';
 import React from 'react';
 import { Action } from '@/constants';
@@ -38,8 +38,6 @@ const Modes = () => {
 
   const modes = getAllModes.data ?? [];
 
-  console.log(modes);
-
   const storeMode = useService(ModesService.store, onUnauthorized);
   const updateMode = useService(ModesService.update, onUnauthorized);
   const deleteMode = useService(ModesService.delete, onUnauthorized);
@@ -49,6 +47,12 @@ const Modes = () => {
       title: 'Nama',
       dataIndex: 'nama',
       sorter: (a, b) => a.nama.length - b.nama.length,
+      searchable: true
+    },
+    {
+      title: 'Role',
+      dataIndex: 'role',
+      sorter: (a, b) => a.role.length - b.role.length,
       searchable: true
     },
     {
@@ -134,14 +138,14 @@ const Modes = () => {
   };
 
   return (
-    <div>
-      <Card>
+    <Card>
+      <Skeleton loading={getAllModes.isLoading}>
         <DataTableHeader model={ModeModels} modul={Modul.MODE} onStore={onCreate} selectedData={selectedData} onSearch={(values) => setFilterValues({ ...filterValues, search: values })} />
         <div className="w-full max-w-full overflow-x-auto">
           <DataTable data={modes} columns={column} loading={getAllModes.isLoading} map={(mode) => ({ key: mode.id, ...mode })} handleSelectedData={(_, selectedRows) => setSelectedData(selectedRows)} pagination={pagination} />
         </div>
-      </Card>
-    </div>
+      </Skeleton>
+    </Card>
   );
 };
 

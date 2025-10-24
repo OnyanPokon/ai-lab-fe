@@ -1,4 +1,5 @@
 import { DashboardFooter, DashboardSider } from '@/components';
+import { Role } from '@/constants';
 import { useAuth } from '@/hooks';
 import { useTheme } from '@/hooks/useTheme';
 import { LogoutOutlined, MenuOutlined, MoonOutlined, SettingOutlined, SunOutlined, UserOutlined } from '@ant-design/icons';
@@ -32,7 +33,7 @@ const Dashboard = () => {
           </button>
         )
       },
-      {
+      user?.is(Role.ADMIN) && {
         key: '2',
         label: (
           <button onClick={() => navigate('/dashboard/pengaturan')} className="flex min-w-32 items-center gap-x-2">
@@ -51,7 +52,7 @@ const Dashboard = () => {
         )
       }
     ],
-    [logout, navigate]
+    [logout, navigate, user]
   );
 
   const {

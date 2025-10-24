@@ -3,3 +3,4 @@ export { default as Users } from './Users/Users';
 export { default as Roles } from './Roles/Roles';
 export { default as Settings } from './Settings';
 export { default as Mode } from './Modes/Modes';
+export { default as ModeList } from './Modes/ModeList';

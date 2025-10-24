@@ -46,6 +46,21 @@ export default class dAuthService {
    *   data?: User
    * }>}
    */
+  static async dashboard(token) {
+    const response = await api.get('/auth/dashboard', { token });
+    if (!response.data) return response;
+    return { ...response, data: response.data };
+  }
+
+  /**
+   * @param {string} token
+   * @returns {Promise<Promise<{
+   *   code: HTTPStatusCode,
+   *   status: boolean,
+   *   message: string,
+   *   data?: User
+   * }>}
+   */
   static async getAllPermissions(token) {
     const response = await api.get('/permissions', { token });
     if (!response.data) return response;
